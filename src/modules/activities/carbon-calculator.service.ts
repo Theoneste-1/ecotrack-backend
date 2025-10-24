@@ -49,27 +49,27 @@ export class CarbonCalculatorService {
     switch (category) {
       case ActivityCategory.TRANSPORT:
         ({ co2_kg, emissionFactor, emissionFactorSource, normalizedValue, normalizedUnit } =
-          this.calculateTransport(type, value, unit, metadata, preferredUnitSystem));
+          this.calculateTransport(type, value, unit || '', metadata, preferredUnitSystem || UnitSystem.METRIC));
         break;
 
       case ActivityCategory.HOME_ENERGY:
         ({ co2_kg, emissionFactor, emissionFactorSource, normalizedValue, normalizedUnit } =
-          this.calculateHomeEnergy(type, value, unit, country));
+          this.calculateHomeEnergy(type, value, unit || '', country));
         break;
 
       case ActivityCategory.DIET:
         ({ co2_kg, emissionFactor, emissionFactorSource, normalizedValue, normalizedUnit } =
-          this.calculateDiet(type, value, unit));
+          this.calculateDiet(type, value, unit || ''));
         break;
 
       case ActivityCategory.FLIGHTS:
         ({ co2_kg, emissionFactor, emissionFactorSource, normalizedValue, normalizedUnit } =
-          this.calculateFlight(value, unit, metadata, preferredUnitSystem));
+          this.calculateFlight(value, unit || '', metadata, preferredUnitSystem || UnitSystem.METRIC));
         break;
 
       case ActivityCategory.OTHER:
         ({ co2_kg, emissionFactor, emissionFactorSource, normalizedValue, normalizedUnit } =
-          this.calculateOther(type, value, unit));
+          this.calculateOther(type, value, unit || ''));
         break;
 
       default:

@@ -6,6 +6,7 @@ import { Goal } from '../../database/entities/goal.entity';
 import { User } from '../../database/entities/user.entity';
 import { DashboardQueryDto } from './dto/dashboard-query.dto';
 import { TrendsQueryDto, TrendsPeriod } from './dto/trends-query.dto';
+import { GoalProgressInterface } from './dto/interfaces/goal-progress.interface';
 
 @Injectable()
 export class DashboardService {
@@ -67,7 +68,7 @@ export class DashboardService {
     });
 
     // Calculate goal progress
-    let goalProgress = null;
+    let goalProgress: GoalProgressInterface | null = null;
     if (goal) {
       const currentMonthStart = new Date(to.getFullYear(), to.getMonth(), 1);
       const currentMonthEnd = new Date(to.getFullYear(), to.getMonth() + 1, 0);

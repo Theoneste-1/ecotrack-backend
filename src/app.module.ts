@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -6,7 +6,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 // Modules
-import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
@@ -21,16 +20,19 @@ import { ActivityLog } from './database/entities/activity-log.entity';
 import { Goal } from './database/entities/goal.entity';
 import { Tip } from './database/entities/tip.entity';
 import { AuditLog } from './database/entities/audit-log.entity';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
-    // Configuration
+    forwardRef(() => AuthModule),
+    forwardRef(() => UsersModule),
+    // // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
 
-    // Database
+    // // Database
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -44,22 +46,26 @@ import { AuditLog } from './database/entities/audit-log.entity';
         entities: [User, Profile, ActivityLog, Goal, Tip, AuditLog],
         synchronize: configService.get('DATABASE_SYNCHRONIZE') === 'true',
         logging: configService.get('NODE_ENV') === 'development',
-        ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
+        ssl:
+          configService.get('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
 
-    // Rate Limiting
+    // // Rate Limiting
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        ttl: configService.get<number>('THROTTLE_TTL') || 60,
-        limit: configService.get<number>('THROTTLE_LIMIT') || 100,
-      }),
+      useFactory: (configService: ConfigService) => [
+        {
+          ttl: configService.get<number>('THROTTLE_TTL') || 60,
+          limit: configService.get<number>('THROTTLE_LIMIT') || 100,
+        },
+      ],
     }),
 
-    // Feature Modules
-    AuthModule,
+    // // Feature Modules
     UsersModule,
     ActivitiesModule,
     DashboardModule,

@@ -10,8 +10,8 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
-import { GetUser } from '../../common/decorators/get-user.decorator';
 import { User } from '../../database/entities/user.entity';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth('JWT-auth')

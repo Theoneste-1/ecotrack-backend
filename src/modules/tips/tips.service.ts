@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, DeepPartial } from 'typeorm';
 import { Tip } from '../../database/entities/tip.entity';
 import { QueryTipsDto } from './dto/query-tips.dto';
+import { CreateTipDto } from './dto/create-tip.dto';
 
 @Injectable()
 export class TipsService {
@@ -52,7 +53,7 @@ export class TipsService {
 
     this.logger.log('Seeding default sustainability tips...');
 
-    const defaultTips = [
+    const defaultTips: CreateTipDto[] = [
       {
         title: 'Switch to LED Bulbs',
         content: 'LED bulbs use up to 75% less energy than traditional incandescent bulbs and last 25 times longer. Replacing just 5 bulbs in your home can save approximately 75kg of CO2 per year.',
@@ -146,7 +147,13 @@ export class TipsService {
     ];
 
     for (const tipData of defaultTips) {
-      const tip = this.tipRepository.create(tipData);
+      const tip = {
+        title: tipData.title,
+        content: tipData.content,
+        category: tipData.category,
+        source_url: tipData.source_url,
+      } as DeepPartial<Tip>
+      // const tip = this.tipRepository.create(tipData);
       await this.tipRepository.save(tip);
     }
 

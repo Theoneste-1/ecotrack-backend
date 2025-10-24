@@ -2,8 +2,8 @@ import { Controller, Get, Query, Res, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ExportsService } from './exports.service';
-import { GetUser } from '../../common/decorators/get-user.decorator';
-import { User } from '../../database/entities/user.entity';
+import { User } from 'src/database/entities/user.entity';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @ApiTags('Exports')
 @ApiBearerAuth('JWT-auth')

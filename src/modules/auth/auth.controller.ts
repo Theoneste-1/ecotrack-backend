@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { PasswordResetRequestDto } from './dto/password-reset-request.dto';
 import { PasswordResetDto } from './dto/password-reset.dto';
-import { Public } from '../../common/decorators/public.decorator';
+import { Public } from './decorators/public.decorator';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -41,7 +41,7 @@ export class AuthController {
   }
 
   @Public()
-  @Throttle(5, 60) // 5 requests per minute
+  @Throttle({ default: { limit: 3, ttl: 60000 } }) // 5 requests per minute
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login to user account' })
@@ -62,7 +62,7 @@ export class AuthController {
   }
 
   @Public()
-  @Throttle(3, 3600) // 3 requests per hour
+  @Throttle({ default: { limit: 3, ttl: 3600000 } }) // 3 requests per hour
   @Post('password-reset-request')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Request password reset' })

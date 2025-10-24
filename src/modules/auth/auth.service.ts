@@ -176,8 +176,8 @@ export class AuthService {
     }
 
     user.password_hash = await bcrypt.hash(newPassword, 10);
-    user.reset_password_token = null;
-    user.reset_password_expires = null;
+    user.reset_password_token = '';
+    user.reset_password_expires = new Date();
     await this.userRepository.save(user);
 
     return { message: 'Password reset successful' };

@@ -5,7 +5,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
-// Modules
+
 import { UsersModule } from './modules/users/users.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
@@ -13,7 +13,6 @@ import { GoalsModule } from './modules/goals/goals.module';
 import { TipsModule } from './modules/tips/tips.module';
 import { ExportsModule } from './modules/exports/exports.module';
 
-// Entities
 import { User } from './database/entities/user.entity';
 import { Profile } from './database/entities/profile.entity';
 import { ActivityLog } from './database/entities/activity-log.entity';
@@ -26,13 +25,12 @@ import { AuthModule } from './modules/auth/auth.module';
   imports: [
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
-    // // Configuration
+
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
 
-    // // Database
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -53,7 +51,6 @@ import { AuthModule } from './modules/auth/auth.module';
       }),
     }),
 
-    // // Rate Limiting
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -65,7 +62,6 @@ import { AuthModule } from './modules/auth/auth.module';
       ],
     }),
 
-    // // Feature Modules
     UsersModule,
     ActivitiesModule,
     DashboardModule,

@@ -101,7 +101,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: cryptortheoneste/nestjs-backend
+          images: cryptortheoneste/eco-track-backend
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -118,8 +118,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=cryptortheoneste/nestjs-backend:buildcache
-          cache-to: type=registry,ref=cryptortheoneste/nestjs-backend:buildcache,mode=max
+          cache-from: type=registry,ref=cryptortheoneste/eco-track-backend:buildcache
+          cache-to: type=registry,ref=cryptortheoneste/eco-track-backend:buildcache,mode=max
           build-args: |
             NODE_ENV=production
 
